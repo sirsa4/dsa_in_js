@@ -24,6 +24,8 @@ class SinglyLinkedList {
     if (!this.head) {
       this.head = node;
       this.tail = node;
+    } else {
+
       //current node after first node is created in else block
       //next node is pointed to with this.tail.next 
       this.tail.next = node;
@@ -33,6 +35,33 @@ class SinglyLinkedList {
     return this
 
   }
+  loop = () => {
+    let current = this.head
+    while (current) {
+      console.log(current.val)
+      current = current.next
+    }
+  }
+  pop = () => {
+    if (!this.head) {
+      return undefined
+    }
+
+    let head = this.head
+    let newTail = head
+    while (head.next) {
+      newTail = head
+      head = head.next
+    }
+    this.tail = newTail
+    this.tail.next = null
+    this.length--
+    if (this.length === 0) {
+      this.head = null
+      this.tail = null
+    }
+    return head
+  }
 }
 
 const linklist = new SinglyLinkedList();
@@ -41,3 +70,8 @@ linklist.push("World!")
 linklist.push("yup")
 linklist.push("no")
 console.log(linklist.head.next.next)
+linklist.loop()
+console.log("---------------")
+linklist.pop()
+linklist.pop()
+linklist.loop()
