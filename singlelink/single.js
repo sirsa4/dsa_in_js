@@ -62,6 +62,36 @@ class SinglyLinkedList {
     }
     return head
   }
+  unshift = (val) => {
+    let newNode = new Node(val)
+    if (!this.head) {
+      this.head = newNode
+      this.tail = newNode
+      this.length++;
+    }
+    else {
+      newNode.next = this.head
+      this.head = newNode
+      this.length++
+    }
+    if (this.length === 0) {
+      this.tail = null;
+    }
+    return this
+  }
+  get = (index) => {
+    if (!this.head) {
+      return undefined
+    }
+    let correctNode = this.head
+    let counter = 0;
+    if (index === 0 || index >= this.length) return null;
+    while (counter !== index) {
+      correctNode = correctNode.next;
+      counter++
+    }
+    return correctNode
+  }
 }
 
 const linklist = new SinglyLinkedList();
@@ -72,6 +102,7 @@ linklist.push("no")
 console.log(linklist.head.next.next)
 linklist.loop()
 console.log("---------------")
-linklist.pop()
-linklist.pop()
 linklist.loop()
+console.log("---------------")
+const world = linklist.get(3)
+console.log("correct: ", world)
