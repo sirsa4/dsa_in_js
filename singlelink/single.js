@@ -100,6 +100,26 @@ class SinglyLinkedList {
     }
     return false
   }
+  insert = (index, val) => {
+    if (index < 0 || index > this.length) {
+      return false
+    }
+    if (index === this.length) {
+      this.push(val)
+      return true
+    }
+    if (index === 0) {
+      this.unshift(val)
+      return true
+    }
+    let newNode = new Node(val)
+    let prevNode = this.get(index - 1)
+    let nextNode = prevNode.next
+    prevNode.next = newNode
+    newNode.next = nextNode
+    this.length++
+    return true
+  }
 }
 
 const linklist = new SinglyLinkedList();
@@ -107,13 +127,8 @@ linklist.push("Hello")
 linklist.push("World!")
 linklist.push("yup")
 linklist.push("no")
-console.log(linklist.head.next.next)
-let change = linklist.set(4, "ok")
-console.log(change)
-linklist.set(0, "byee")
 linklist.loop()
 console.log("---------------")
+linklist.set(1, "Bye")
+linklist.insert(2, "used to be yuuup")
 linklist.loop()
-console.log("---------------")
-const world = linklist.get(3)
-console.log("correct: ", world)
