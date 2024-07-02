@@ -85,12 +85,20 @@ class SinglyLinkedList {
     }
     let correctNode = this.head
     let counter = 0;
-    if (index === 0 || index >= this.length) return null;
+    if (index < 0 || index >= this.length) return null;
     while (counter !== index) {
       correctNode = correctNode.next;
       counter++
     }
     return correctNode
+  }
+  set = (index, val) => {
+    let correctNode = this.get(index)
+    if (correctNode) {
+      correctNode.val = val
+      return true
+    }
+    return false
   }
 }
 
@@ -100,6 +108,9 @@ linklist.push("World!")
 linklist.push("yup")
 linklist.push("no")
 console.log(linklist.head.next.next)
+let change = linklist.set(4, "ok")
+console.log(change)
+linklist.set(0, "byee")
 linklist.loop()
 console.log("---------------")
 linklist.loop()
