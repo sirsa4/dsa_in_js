@@ -144,6 +144,34 @@ class SinglyLinkedList {
     this.length--
     return true
   }
+  reverse = () => {
+    if (!this.head) {
+      return null
+    }
+    let current = this.head
+    this.head = this.tail
+    this.tail = current
+
+    let prev = null
+    let next;
+    while (current) {
+      next = current.next
+      current.next = prev
+      prev = current
+      current = next
+    }
+    return this
+  }
 }
+
+
+let linklist = new SinglyLinkedList()
+linklist.push("one")
+linklist.push("two")
+linklist.push("three")
+linklist.push("four")
+linklist.reverse()
+linklist.print()
+
 
 export default SinglyLinkedList
