@@ -120,6 +120,21 @@ class SinglyLinkedList {
     this.length++
     return true
   }
+  reverse = () => {
+    if (!this.head) return null
+    let current = this.head
+    this.head = this.tail
+    this.tail = current
+    let prev = null
+    let next;
+    while (current) {
+      next = current.next
+      current.next = prev
+      prev = current
+      current = next
+    }
+    return this
+  }
 }
 
 const linklist = new SinglyLinkedList();
@@ -131,4 +146,5 @@ linklist.loop()
 console.log("---------------")
 linklist.set(1, "Bye")
 linklist.insert(2, "used to be yuuup")
+linklist.reverse()
 linklist.loop()
