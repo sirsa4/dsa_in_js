@@ -34,6 +34,23 @@ class DoubleLinkedList {
     this.length++
     return this
   }
+  pop = () => {
+    if (!this.head) return null
+    if (this.length === 1) {
+      this.head = null
+      this.tail = null
+    }
+    //current final tail
+    let oldTail = this.tail
+    //make previous tail the new final tail of the entire list
+    this.tail = oldTail.prev
+    //sever or cut link to old tail
+    this.tail.next = null
+    //cut oldTail prev link back current new tail
+    oldTail.prev = null
+    this.length--
+    return oldTail
+  }
 }
 
 let linklist = new DoubleLinkedList();
@@ -41,5 +58,6 @@ linklist.push("one")
 linklist.push("two")
 linklist.push("three")
 linklist.push("four")
+linklist.pop()
 console.log(linklist)
 linklist.print()
