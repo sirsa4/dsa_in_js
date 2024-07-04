@@ -51,6 +51,39 @@ class DoubleLinkedList {
     this.length--
     return oldTail
   }
+  shift = () => {
+    if (!this.head) return null
+    let oldHead = this.head
+    if (this.length === 1) {
+      this.head = null
+      this.tail = null
+    } else {
+      //store current node at head of list
+      //move head to next node at at index 1
+      this.head = oldHead.next
+      //remove links of old head node
+      this.prev = null
+      oldHead.next = null
+      //decrement list and return removed node
+    }
+    this.length--
+    return oldHead
+  }
+  unshift = (val) => {
+    let newNode = new Node(val)
+    if (!this.head) {
+      this.head = newNode
+      this.tail = newNode
+    } else {
+      //store the old
+      let oldHead = this.head
+      oldHead.prev = newNode
+      newNode.next = oldHead
+      this.head = newNode
+    }
+    this.length++
+    return this
+  }
 }
 
 let linklist = new DoubleLinkedList();
@@ -58,6 +91,9 @@ linklist.push("one")
 linklist.push("two")
 linklist.push("three")
 linklist.push("four")
-linklist.pop()
+let item = linklist.unshift("new first")
+linklist.unshift("last new first!")
+linklist.unshift("ok, new first?")
 console.log(linklist)
+console.log(item)
 linklist.print()
