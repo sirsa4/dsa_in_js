@@ -90,6 +90,24 @@ public:
     length--;
     return *oldHead;
   }
+  std::optional<Node<T>> get(int index) {
+    if (index < 0 || index >= length) {
+      return std::nullopt;
+    }
+    int count = 0;
+    Node<T> *current = head;
+    while (index != count) {
+      current = current->next;
+      count++;
+    }
+    if (current) {
+      return std::optional<Node<T>>(
+          current); // Return optional containing the node
+    } else {
+      return std::nullopt; // Handle case where node at index is not found
+                           // (shouldn't normally happen if length is correct)
+    }
+  }
   ~SinglyLinkedList() {
     Node<T> *current = head;
     while (current) {
@@ -107,8 +125,15 @@ int main(int argc, char const *argv[]) {
   list.push(0);
   list.push(1);
   list.push(2);
-  list.shift();
+  std::optional<Node<int>> optionalNode = list.get(1);
   list.print();
-
+  // Check if optionalNode has a value
+  if (optionalNode.has_value()) {
+    Node<int> item =
+        *optionalNode; // Extract the node if optionalNode has a value
+    std::cout << "Node at index 1: " << item.val << std::endl;
+  } else {
+    std::cout << "Index out of bounds or node not found." << std::endl;
+  }
   return 0;
 }
