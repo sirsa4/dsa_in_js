@@ -1,139 +1,131 @@
 #include <iostream>
-#include <optional>
-#include <string>
+#include <stdexcept> // for std::out_of_range
 
-using std::cout;
-using std::endl;
-
+// Define a Node class for the linked list
 template <typename T> class Node {
-public:
-  T val;
+private:
+  T val; // Data member renamed from data to val
   Node *next;
 
-  // constructor
-  Node(const T &val) : val(val), next(nullptr) {}
+public:
+  Node(T val) : val(val), next(nullptr) {}
+
+  // Accessor method to get the value of val
+  T getVal() const { return val; }
+
+  // Allow LinkedList class to access private members
+  template <typename U> friend class LinkedList;
 };
 
-template <typename T> class SinglyLinkedList {
+// Define the LinkedList class
+template <typename T> class LinkedList {
 private:
   Node<T> *head;
-  Node<T> *tail;
-  int length;
+  Node<T> *tail; // Pointer to the last node
 
 public:
-  SinglyLinkedList() : head(nullptr), tail(nullptr), length(0) {}
-  void print() {
-    Node<T> *current = head;
-    while (current) {
+  LinkedList() : head(nullptr), tail(nullptr) {}
 
-      cout << "Current node: " << current->val << " -Next node: "
-           << (current->next ? std::to_string(current->next->val) : "null")
-           << endl;
-      current = current->next;
+  ~LinkedList() {
+    // Destructor to delete all nodes
+    Node<T> *current = head;
+    Node<T> *next;
+    while (current != nullptr) {
+      next = current->next;
+      delete current;
+      current = next;
     }
+    head = nullptr;
+    tail = nullptr;
   }
-  SinglyLinkedList<T> &push(const T &val) {
-    Node<T> *newNode = new Node(val);
-    if (!head) {
+
+  // Method to insert an element at the end of the list
+  LinkedList<T> &push(T val) {
+    Node<T> *newNode = new Node<T>(val);
+    if (head == nullptr) {
+      // If list is empty
       head = newNode;
       tail = newNode;
     } else {
       tail->next = newNode;
       tail = newNode;
     }
-    length++;
     return *this;
   }
 
-  std::optional<Node<T>> pop() {
-    if (!head) {
-      return std::nullopt; // Return empty optional if list is empty
+  // Method to remove the last element from the list and return the removed node
+  Node<T> *pop() {
+    if (head == nullptr) {
+      std::cerr << "List is empty. Cannot pop.\n";
+      return nullptr;
     }
-
-    Node<T> *oldTail = head;
-    Node<T> *newTail = nullptr;
-
-    // Traverse to find the old tail and the new tail
-    while (oldTail->next) {
-      newTail = oldTail;
-      oldTail = oldTail->next;
-    }
-
-    // Update tail and handle list length
-    if (newTail) {
-      newTail->next = nullptr;
-      tail = newTail;
-    } else {
-      head = nullptr; // If newTail is nullptr, the list is empty
-    }
-    length--;
-
-    // If list is now empty, update tail to nullptr
-    if (length == 0) {
-      tail = nullptr;
-    }
-
-    // Return the popped node
-    return *oldTail;
-  }
-  std::optional<Node<T>> shift() {
-    if (!head) {
-      return std::nullopt;
-    }
-
-    Node<T> *oldHead = head;
-    head = oldHead->next;
-    oldHead->next = nullptr;
-    if (length == 1) {
+    Node<T> *removedNode;
+    if (head == tail) {
+      // Only one element in the list
+      removedNode = head;
       head = nullptr;
-    }
-    length--;
-    return *oldHead;
-  }
-  std::optional<Node<T>> get(int index) {
-    if (index < 0 || index >= length) {
-      return std::nullopt;
-    }
-    int count = 0;
-    Node<T> *current = head;
-    while (index != count) {
-      current = current->next;
-      count++;
-    }
-    if (current) {
-      return std::optional<Node<T>>(
-          current); // Return optional containing the node
+      tail = nullptr;
     } else {
-      return std::nullopt; // Handle case where node at index is not found
-                           // (shouldn't normally happen if length is correct)
+      // Traverse to second last node
+      Node<T> *current = head;
+      while (current->next != tail) {
+        current = current->next;
+      }
+      removedNode = tail;
+      tail = current;
+      tail->next = nullptr;
     }
+    return removedNode;
   }
-  ~SinglyLinkedList() {
-    Node<T> *current = head;
-    while (current) {
-      Node<T> *nextNode = current->next;
-      delete current;
-      current = nextNode;
+
+  // Method to retrieve a Node at index i
+  Node<T> *get(int index) const {
+    if (head == nullptr) {
+      throw std::out_of_range("List is empty");
     }
+    Node<T> *current = head;
+    int currentIndex = 0;
+    while (current != nullptr) {
+      if (currentIndex == index) {
+        return current; // Return the entire Node
+      }
+      current = current->next;
+      currentIndex++;
+    }
+    throw std::out_of_range("Index out of bounds");
+  }
+
+  // Method to print all elements in the list
+  void print() const {
+    Node<T> *current = head;
+    while (current != nullptr) {
+      std::cout << current->getVal() << " "; // Use accessor method to print val
+      current = current->next;
+    }
+    std::cout << "\n";
   }
 };
 
-int main(int argc, char const *argv[]) {
-  /* code */
-  cout << "Singly linkedlist" << endl;
-  SinglyLinkedList<int> list;
-  list.push(0);
-  list.push(1);
-  list.push(2);
-  std::optional<Node<int>> optionalNode = list.get(1);
-  list.print();
-  // Check if optionalNode has a value
-  if (optionalNode.has_value()) {
-    Node<int> item =
-        *optionalNode; // Extract the node if optionalNode has a value
-    std::cout << "Node at index 1: " << item.val << std::endl;
-  } else {
-    std::cout << "Index out of bounds or node not found." << std::endl;
-  }
+int main() {
+  // Example usage of the LinkedList class with integers
+  LinkedList<int> intList;
+  intList.push(1).push(2).push(3);
+  intList.print(); // Output: 1 2 3
+
+  // Example usage of the get method to retrieve a Node
+  Node<int> *itemNode = intList.get(1); // Get the Node at index 1
+  std::cout << "Item at index 1: " << itemNode->getVal()
+            << "\n"; // Output: Item at index 1: 2
+
+  // Example usage of the LinkedList class with strings
+  LinkedList<std::string> stringList;
+  stringList.push("Hello").push("world");
+  stringList.print(); // Output: Hello world
+
+  // Example usage of the get method to retrieve a Node
+  Node<std::string> *itemNodeStr = stringList.get(0); // Get the Node at index 0
+  std::cout << "Item at index 0: " << itemNodeStr->getVal()
+            << "\n"; // Output: Item at index 0: Hello
+
   return 0;
 }
