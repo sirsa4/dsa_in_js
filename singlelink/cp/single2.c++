@@ -161,6 +161,30 @@ public:
     }
     return false;
   }
+  bool reverse() {
+    if (!head) {
+      return false;
+    }
+    // swap current tail and current head of list first
+    Node<T> *current_node = head;
+    head = tail;
+    tail = current_node;
+    Node<T> *next_node = nullptr;
+    Node<T> *prev_node = nullptr;
+    // change pointers in loop
+    while (current_node) {
+      // store next node temporarily while working on current iteration
+      next_node = current_node->get_next();
+      // reverse happens here. point current_node to prev_node
+      current_node->set_next(prev_node);
+      // move prev_node- to current_node in order to reverse in next iteration
+      prev_node = current_node;
+      // move current node the stored next_node. repeat iteration untill the
+      // last node.
+      current_node = next_node;
+    }
+    return true;
+  }
 };
 
 int main(int argc, char *argv[]) {
