@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept> // for std::out_of_range
-
+using std::cout;
+using std::endl;
 // Define a Node class for the linked list
 template <typename T> class Node {
 private:
@@ -30,7 +31,7 @@ public:
     // Destructor to delete all nodes
     Node<T> *current = head;
     Node<T> *next;
-    while (current != nullptr) {
+    while (current->next) {
       next = current->next;
       delete current;
       current = next;
@@ -83,16 +84,13 @@ public:
     if (head == nullptr) {
       throw std::out_of_range("List is empty");
     }
-    Node<T> *current = head;
-    int currentIndex = 0;
-    while (current != nullptr) {
-      if (currentIndex == index) {
-        return current; // Return the entire Node
-      }
-      current = current->next;
-      currentIndex++;
+    Node<T> *foundNode = head;
+    int count = 0;
+    while (count != index) {
+      foundNode = foundNode->next;
+      count++;
     }
-    throw std::out_of_range("Index out of bounds");
+    return foundNode;
   }
 
   // Method to print all elements in the list
@@ -117,11 +115,12 @@ int main() {
   std::cout << "Item at index 1: " << itemNode->getVal()
             << "\n"; // Output: Item at index 1: 2
 
+  cout << "--------------------------------------------------------------"
+       << endl;
   // Example usage of the LinkedList class with strings
   LinkedList<std::string> stringList;
   stringList.push("Hello").push("world");
   stringList.print(); // Output: Hello world
-
   // Example usage of the get method to retrieve a Node
   Node<std::string> *itemNodeStr = stringList.get(0); // Get the Node at index 0
   std::cout << "Item at index 0: " << itemNodeStr->getVal()
