@@ -140,6 +140,26 @@ public:
     if (index < 0 || index > length) {
       return false;
     }
+    if (index == length - 1) {
+      this->pop();
+      return true;
+    }
+    if (index == 0) {
+      this->shift();
+      return true;
+    }
+    Node<T> *prev_node = this->get(index - 1);
+    // current node
+    Node<T> *removed_node = prev_node->get_next();
+    if (removed_node) {
+      // point previous node to the after removed one. jumping over
+      prev_node->set_next(removed_node->get_next());
+      // finally delete removed node from memory
+      delete removed_node;
+      length--;
+      return true;
+    }
+    return false;
   }
 };
 
@@ -152,6 +172,7 @@ int main(int argc, char *argv[]) {
   list.push(3);
   list.push(4);
   list.insert(1, 12);
+  list.remove(2);
   Node<int> *item = list.get(0);
   // Node<int> *removed_item = list.pop();
   cout << "item at index 0: " << item->get_val() << endl;
