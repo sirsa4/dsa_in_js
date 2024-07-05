@@ -91,6 +91,56 @@ public:
     length--;
     return old_head;
   }
+  Node<T> *unshift(const T &val) {
+    Node<T> *newNode = new Node(val);
+    if (!head) {
+      head = newNode;
+      tail = newNode;
+    } else {
+      Node<T> *current = head;
+      newNode->set_next(current);
+      head = newNode;
+    }
+    return newNode;
+  }
+  bool set(int index, const T &val) {
+    if (index < 0 || index >= length) {
+      return false;
+    }
+    Node<T> *found_node = this->get(index);
+    if (found_node) {
+      found_node->set_val(val);
+      return true;
+    }
+    return false;
+  }
+  bool insert(int index, const T &val) {
+    if (index < 0 || index > length) {
+      return false;
+    }
+    if (index == length) {
+      this->push(val);
+      return true;
+    }
+    if (index == 0) {
+      this->unshift(val);
+      return true;
+    }
+    Node<T> *new_node = new Node(val);
+    Node<T> *prev_node = this->get(index - 1);
+    if (prev_node) {
+      new_node->set_next(prev_node->get_next());
+      prev_node->set_next(new_node);
+      length++;
+      return true;
+    }
+    return false;
+  }
+  bool remove(int index) {
+    if (index < 0 || index > length) {
+      return false;
+    }
+  }
 };
 
 int main(int argc, char *argv[]) {
@@ -101,13 +151,10 @@ int main(int argc, char *argv[]) {
   list.push(2);
   list.push(3);
   list.push(4);
-  list.shift();
-  list.shift();
-  list.shift();
-  list.shift();
+  list.insert(1, 12);
   Node<int> *item = list.get(0);
-  Node<int> *removed_item = list.pop();
-  cout << "item: " << removed_item->get_val() << endl;
+  // Node<int> *removed_item = list.pop();
+  cout << "item at index 0: " << item->get_val() << endl;
   list.print();
   return 0;
 }
