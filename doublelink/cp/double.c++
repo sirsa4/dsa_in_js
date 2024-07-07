@@ -89,6 +89,56 @@ public:
     length++;
     return *this;
   }
+  Node<T> *pop() {
+    if (!head) {
+      return nullptr;
+    }
+    Node<T> *old_tail = tail;
+    if (head == tail) {
+      head = nullptr;
+      tail = nullptr;
+      return nullptr;
+    } else {
+      tail = old_tail->get_prev();
+      tail->set_next(nullptr);
+    }
+    old_tail->set_prev(nullptr);
+    length--;
+    return old_tail;
+  }
+  Node<T> *shift() {
+    if (!head) {
+      return nullptr;
+    }
+    Node<T> *old_head = head;
+    if (head == tail) {
+      head = nullptr;
+      tail = nullptr;
+      return nullptr;
+    } else {
+      head = old_head->get_next();
+    }
+    old_head->set_next(nullptr);
+    length--;
+    return old_head;
+  }
+  Node<T> *unshift(const T &val) {
+    Node<T> *new_node = new Node(val);
+    if (!head) {
+      this->head = new_node;
+      this->tail = new_node;
+    } else {
+      // point new_node to current head
+      new_node->set_next(head);
+      // point current head node back to new_node
+      head->set_prev(new_node);
+      // make new node the head of list. this way old head is now second node in
+      // the list
+      head = new_node;
+    }
+    length++;
+    return new_node;
+  }
 };
 
 int main(int argc, char *argv[]) {
@@ -97,6 +147,9 @@ int main(int argc, char *argv[]) {
   list.push(0);
   list.push(1);
   list.push(2).push(3).push(4);
+  list.unshift(-1);
+  Node<int> *item = list.pop();
+  cout << "popped item: " << item->get_val() << endl;
   list.print();
   return 0;
 }
