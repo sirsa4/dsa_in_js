@@ -139,6 +139,29 @@ public:
     length++;
     return new_node;
   }
+  Node<T> *get(int index) {
+    if (index < 0 || index >= length) {
+      return nullptr;
+    }
+    Node<T> *current_node;
+    int count = 0;
+    if (index <= length / 2) {
+      current_node = head;
+      count = 0;
+      while (count != index) {
+        current_node = current_node->get_next();
+        count++;
+      }
+    } else {
+      current_node = tail;
+      count = length - 1;
+      while (count != index) {
+        current_node = current_node->get_prev();
+        count--;
+      }
+    }
+    return current_node;
+  }
 };
 
 int main(int argc, char *argv[]) {
@@ -146,10 +169,13 @@ int main(int argc, char *argv[]) {
   DoublyLinkedList<int> list;
   list.push(0);
   list.push(1);
-  list.push(2).push(3).push(4);
-  list.unshift(-1);
-  Node<int> *item = list.pop();
-  cout << "popped item: " << item->get_val() << endl;
+  list.push(2222).push(33).push(44);
+  Node<int> *item = list.get(-1);
+  if (item) {
+    cout << "get item: " << item->get_val() << endl;
+  } else {
+    std::cout << "index is out of bound index" << std::endl;
+  }
   list.print();
   return 0;
 }
