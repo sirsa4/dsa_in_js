@@ -1,5 +1,5 @@
 run: single.c++
-	g++ -o ./bin/single2 single2.c++
-	./bin/single2
+	g++ -g -Wall -o ./bin/single3 single3.c++
+	./bin/single3
 clean:
-	rm -f ./bin/single2
+	rm -f ./bin/single3
