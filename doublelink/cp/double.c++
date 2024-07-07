@@ -228,11 +228,39 @@ public:
       // check if next_node is not nullptr or exists
       if (next_node) {
         // point the node that was next prev_node before now back to the
-        // new_node instead
+        // new_node instead  new_node->set_next(next_node);
         next_node->set_prev(new_node);
       }
     }
     length++;
+    return true;
+  }
+  bool remove(int index) {
+    if (index < 0 || index >= length) {
+      return false;
+    }
+    if (index == length - 1) {
+      this->pop();
+      return true;
+    }
+    if (index == 0) {
+      this->shift();
+      return true;
+    }
+    // get the needed nodes
+    Node<T> *prev_node = this->get(index - 1);
+    Node<T> *node_to_remove = prev_node->get_next();
+    Node<T> *next_node = node_to_remove->get_next();
+    // point prev_node to the new next_node-
+    prev_node->set_next(next_node);
+    if (next_node) {
+      // point next_node back to prev_node
+      next_node->set_prev(prev_node);
+    }
+    node_to_remove->set_next(nullptr);
+    node_to_remove->set_prev(nullptr);
+    delete node_to_remove;
+    length--;
     return true;
   }
 };
@@ -243,7 +271,7 @@ int main(int argc, char *argv[]) {
   list.push(0);
   list.push(1);
   list.push(2222).push(33).push(44);
-  list.insert(3, 55);
+  list.remove(2);
   Node<int> *item = list.get(-1);
   if (item) {
     cout << "get item: " << item->get_val() << endl;
