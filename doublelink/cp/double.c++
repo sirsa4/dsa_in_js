@@ -64,7 +64,8 @@ public:
         std::cout << " - Next node: (" << current_node->get_next()->get_val()
                   << ")";
       } else {
-        std::cout << " -Next node: (No next node!)";
+        std::cout << " -Next node: (No next node!) - length: (" << length
+                  << ")";
       }
       std::cout << std::endl;
       current_node = current_node->get_next();
@@ -162,6 +163,42 @@ public:
     }
     return current_node;
   }
+  bool set(int index, const T &val) {
+    if (!head) {
+      return false;
+    }
+    if (index < 0 || index >= length) {
+      return false;
+    }
+    Node<T> *found_node = this->get(index);
+    if (found_node) {
+      found_node->set_val(val);
+      return true;
+    }
+    return false;
+    /*
+        // rewrite get() logic for practice
+        Node<T> *found_node;
+        int count;
+        if (index < length / 2) {
+          found_node = head;
+          count = 0;
+          while (index != count) {
+            found_node = found_node->get_next();
+            count++;
+          }
+        } else {
+          found_node = tail;
+          count = length - 1;
+          while (count != index) {
+            found_node = found_node->get_prev();
+            count--;
+          }
+        }
+        found_node->set_val(val);
+        return true;
+        */
+  }
 };
 
 int main(int argc, char *argv[]) {
@@ -170,6 +207,7 @@ int main(int argc, char *argv[]) {
   list.push(0);
   list.push(1);
   list.push(2222).push(33).push(44);
+  list.set(1, 55);
   Node<int> *item = list.get(-1);
   if (item) {
     cout << "get item: " << item->get_val() << endl;
