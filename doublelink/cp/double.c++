@@ -199,6 +199,42 @@ public:
         return true;
         */
   }
+  bool insert(int index, const T &val) {
+    if (index < 0 || index > length) {
+      return false;
+    }
+    if (index == length) {
+      this->push(val);
+      return true;
+    }
+    if (index == 0) {
+      this->unshift(val);
+      return true;
+    }
+    Node<T> *new_node = new Node(val);
+    Node<T> *prev_node = this->get(index - 1);
+    if (prev_node) {
+      // Store the next node incase it is nullptr and leads to undefined
+      // behaviour
+      Node<T> *next_node = prev_node->get_next();
+      // point new_node to the node next to prev_node
+      new_node->set_next(next_node);
+      // point new_node back to previous node. new_node is taking place that was
+      // next previous node before
+      new_node->set_prev(prev_node);
+      // point prev_node to new_node. now new_node has been inserted
+      //  between prev_node and the node next to it.
+      prev_node->set_next(new_node);
+      // check if next_node is not nullptr or exists
+      if (next_node) {
+        // point the node that was next prev_node before now back to the
+        // new_node instead
+        next_node->set_prev(new_node);
+      }
+    }
+    length++;
+    return true;
+  }
 };
 
 int main(int argc, char *argv[]) {
@@ -207,7 +243,7 @@ int main(int argc, char *argv[]) {
   list.push(0);
   list.push(1);
   list.push(2222).push(33).push(44);
-  list.set(1, 55);
+  list.insert(3, 55);
   Node<int> *item = list.get(-1);
   if (item) {
     cout << "get item: " << item->get_val() << endl;
