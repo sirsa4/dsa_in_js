@@ -1,5 +1,5 @@
-run: double.c++
-	g++ -g -Wall -o ./bin/double double.c++
-	./bin/double
+run: bst.c++
+	g++ -g -Wall -o ./bin/bst bst.c++
+	./bin/bst
 clean:
-	rm -f ./bin/double
+	rm -f ./bin/bst
