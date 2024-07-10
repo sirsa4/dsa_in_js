@@ -1,5 +1,5 @@
-run: double.c++
-	g++ -g -Wall -o ./bin/double double.c++
-	./bin/double
+run: main.c++
+	g++ -g -Wall -o ./bin/main main.c++
+	./bin/main
 clean:
-	rm -f ./bin/double
+	rm -f ./bin/main
