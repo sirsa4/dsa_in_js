@@ -143,6 +143,22 @@ class BinarySearchTree {
     }
     return visited;
   }
+  DFSPostOrder = () => {
+    let current = this.root;
+    let data = []
+
+    const traverse = (node) => {
+      if (node.left) {
+        traverse(node.left)
+      }
+      if (node.right) {
+        traverse(node.right)
+      }
+      data.push(node.val)
+    }
+    traverse(current);
+    return data;
+  }
 }
 
 const b = new BinarySearchTree();
@@ -155,6 +171,8 @@ b.insert(20)
 
 let list = b.BFS2();
 console.log(list)
+let list2 = b.DFSPostOrder();
+console.log(list2)
 
 
 
