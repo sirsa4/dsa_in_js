@@ -126,23 +126,6 @@ class BinarySearchTree {
     }
     return visited;
   }
-  BFS2 = () => {
-    let que = new Queue();
-    let visited = [];
-    let node = this.root;
-    que.enqueue(node);
-    while (que.length) {
-      node = que.dequeue();
-      visited.push(node);
-      if (node.left) {
-        que.enqueue(node.left)
-      }
-      if (node.right) {
-        que.enqueue(node.right)
-      }
-    }
-    return visited;
-  }
   DFSPostOrder = () => {
     let current = this.root;
     let data = []
@@ -159,6 +142,21 @@ class BinarySearchTree {
     traverse(current);
     return data;
   }
+  DFSInOrder = () => {
+    let current = this.root;
+    let data = [];
+    const traverse = (node) => {
+      if (node.left) {
+        traverse(node.left);
+      }
+      data.push(node.val);
+      if (node.right) {
+        traverse(node.right);
+      }
+    }
+    traverse(current);
+    return data;
+  }
 }
 
 const b = new BinarySearchTree();
@@ -169,10 +167,12 @@ b.insert(3)
 b.insert(8)
 b.insert(20)
 
-let list = b.BFS2();
-console.log(list)
+let list = b.BFS();
+console.log(list);
 let list2 = b.DFSPostOrder();
-console.log(list2)
+console.log(list2);
+let list3 = b.DFSInOrder();
+console.log(list3);
 
 
 
