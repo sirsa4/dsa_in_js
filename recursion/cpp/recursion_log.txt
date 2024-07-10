@@ -1,0 +1,14 @@
+Entering function with value: 5
+Entering function with value: 4
+Entering function with value: 3
+Entering function with value: 2
+Entering function with value: 1
+Entering function with value: 0
+Entering function with value: -1
+Exiting function with value: -1
+Exiting function with value: 0
+Exiting function with value: 1
+Exiting function with value: 2
+Exiting function with value: 3
+Exiting function with value: 4
+Exiting function with value: 5
