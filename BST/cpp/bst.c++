@@ -8,7 +8,6 @@ private:
   T val;
   Node<T> *left;
   Node<T> *right;
-
 public:
   Node(T val) : val(val), left(nullptr), right(nullptr) {}
   // Getters

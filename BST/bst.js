@@ -11,14 +11,14 @@ class BinarySearchTree {
     this.root = null;
   }
 
-
   print = (node = this.root, prefix = "", isLeft = true) => {
     if (node !== null) {
       console.log(prefix + (isLeft ? "├── " : "└── ") + node.val);
       this.print(node.left, prefix + (isLeft ? "│   " : "    "), true);
       this.print(node.right, prefix + (isLeft ? "│   " : "    "), false);
     }
-  }
+  };
+
   insert = (val) => {
     let newNode = new Node(val);
     if (!this.root) {
@@ -59,12 +59,12 @@ class BinarySearchTree {
           }
         }
         return undefined;
-      }
+      };
     }
 
-    console.log("new node added")
+    console.log("new node added");
     return this;
-  }
+  };
 }
 
 const bst = new BinarySearchTree();
